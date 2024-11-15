@@ -1,506 +1,591 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
+
+    <!-- Firebase App (the core Firebase SDK) -->
+<!-- <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script> -->
+
+<!-- <script>
+ 
+  const firebaseConfig = {
+    apiKey: "AIzaSyCz3KwfK_hZysS7IjtVPaojhBX20NXWOgU",
+    authDomain: "thongdiep-4e500.firebaseapp.com",
+    databaseURL: "https://thongdiep-4e500-default-rtdb.firebaseio.com",
+    projectId: "thongdiep-4e500",
+    storageBucket: "thongdiep-4e500.firebasestorage.app",
+    messagingSenderId: "338536013196",
+    appId: "1:338536013196:web:0dc8a4288ff80520554aa9"
+  };
+
+
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+</script> -->
+
+
+
+<script>
+    window.difyChatbotConfig = {
+     token: 'QQgGBD6JIgOfILg9',
+     baseUrl: 'http://localhost'
+    }
+   </script>
+   <script
+    src="http://localhost/embed.min.js"
+    id="QQgGBD6JIgOfILg9"
+    defer>
+   </script>
+   <style>
+     #dify-chatbot-bubble-button {
+       background-color: #1C64F2 !important;
+     }
+     #dify-chatbot-bubble-window {
+       width: 24rem !important;
+       height: 40rem !important;
+     }
+   </style>
+</style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Trò Ma Sói</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Creepster&family=Arial&display=swap">
+    <meta name="description" content="Đam Mê Kỹ Năng - Tool giải mật thư, Bot học mật thư và tài liệu.">
+
+     <!-- Thẻ Open Graph cho Facebook và các nền tảng khác -->
+  <meta property="og:title" content="Đam Mê Kỹ Năng">
+  <meta property="og:description" content="Đam Mê Kỹ Năng - Tool giải mật thư, Bot học mật thư và tài liệu.">
+  <meta property="og:image" content="image/thumnail.png">
+  <meta property="og:url" content="https://dammekynang.id.vn/">
+  <meta property="og:type" content="website">
+
+  <!-- Thẻ Twitter Card cho Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Đam Mê Kỹ Năng">
+  <meta name="twitter:description" content="Đam Mê Kỹ Năng - Tool giải mật thư, Bot học mật thư và tài liệu.">
+  <meta name="twitter:image" content="image/thumnail.png">
+
+    <link rel="icon" href="logo/logoweb-dammekynang.png" type="image/png">
+
     <style>
-        body {
+        /* CSS cho toàn trang */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
             font-family: Arial, sans-serif;
-            background-color: #111;
-            color: #f0f0f0;
+            color: #333;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        /* Thanh điều hướng */
+        .navbar {
+            position: fixed;
+            top: 1;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.363);
+            padding: 10px 20px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #fff;
+        }
+
+        .navbar img {
+            height: 60px;
+        }
+
+        .navbar .title-container {
+            text-align: center;
+            flex-grow: 1;
+            color: #fff;
+        }
+
+        .navbar .title-container h1 {
+            font-size: 1.2em;
+            margin: 5px 0;
+        }
+
+        .navbar .title-container p {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+                /* Nút Gửi Thông Điệp */
+                .send-message-btn {
+            padding: 10px 20px;
+            background-color: #f3a1a1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            animation: pulse 1.5s infinite;
+            transition: background-color 0.3s;
+        }
+
+        /* Hiệu ứng nhấp nháy */
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(169, 231, 52, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 15px rgb(183, 228, 61);
+            }
+        }
+
+        .send-message-btn:hover {
+            background-color: #c3d425;
+            color: #ffffff;
+        }
+        /* Bản đồ nền */
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-image: url('image/mapcamp.png');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden; /* Đảm bảo không có nội dung tràn ra ngoài */
+        }
+        .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #333;
+    position: absolute;
+    cursor: pointer;
+    top: 10%; /* Giới hạn vị trí theo chiều dọc */
+    left: 10%; /* Giới hạn vị trí theo chiều ngang */
+}
+
+        /* Các điểm cắm trại */
+        .camp-spot {
+            position: absolute;
+            color: #ffeb3b;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+            border: 2px solid transparent;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+
+        .camp-spot:hover {
+            transform: scale(1.1);
+            color: #fff;
+            background-color: rgba(255, 193, 7, 0.8);
+            border-color: #ffc107;
+        }
+
+        /* Định vị cố định các điểm cắm trại dựa trên tỷ lệ % */
+        #spot-1 { top: 50%; left: 30%; } /* Điều chỉnh theo vị trí mong muốn */
+        #spot-2 { top: 69%; left: 32%; }
+        #spot-3 { top: 60%; left: 55%; }
+        #spot-4 { top: 39%; left: 50%; }
+
+        /* Tùy chọn khi di chuột */
+        .camp-options {
+            display: none;
+            position: absolute;
+            top: -90px;
+            left: -50px;
+            width: 160px;
+            padding: 15px;
+            background-color: rgb(0, 0, 0);
+            color: #fff;
+            border-radius: 5px;
             text-align: center;
         }
-        h1 {
-            font-family: 'Creepster', Arial, sans-serif;
-            font-size: 2.5em;
-            color: #e74c3c;
-            margin-bottom: 20px;
+
+        .camp-options a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 0;
         }
-        .container {
-            width: 90%;
-            margin: auto;
-            max-width: 700px;
-            padding: 20px;
-            background-color: #1b1b1b;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+
+        .camp-options a:hover {
+            text-decoration: underline;
         }
-        .reset-button, .cancel-button, .button {
-            padding: 12px 20px;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-            width: 100%;
-            margin: 10px 0;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-        .reset-button {
-            background-color: #e74c3c;
-            color: white;
-        }
-        .reset-button:hover {
-            background-color: darkred;
-        }
-        .cancel-button {
-            background-color: #555;
-            color: white;
-        }
-        .cancel-button:hover {
-            background-color: #333;
-        }
-        .button {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .button:hover {
-            background-color: #45a049;
-        }
-        .warning-button {
-            background-color: orange;
-            color: white;
+        
+        .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #333;
+  position: absolute;
+  cursor: pointer;
+}
+
+        .tooltip {
             display: none;
-            margin-top: 10px;
-        }
-        .player-list, .role-list {
-            margin-top: 20px;
-            background-color: #222;
-            padding: 15px;
-            border-radius: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #333;
             padding: 10px;
-            border: 1px solid #444;
-            color: #ddd;
+            z-index: 1000;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+        }
+        .tooltip table {
             font-size: 1em;
         }
-        .alive {
-            background-color: #2ecc71;
+        .tooltip td {
+            padding: 5px 10px;
         }
-        .dead {
-            background-color: #e74c3c;
-        }
-        .controls, .night-role-list {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-        }
-        .role-button {
-            padding: 10px;
+
+
+        /* Danh sách của nút Mật Thư - Hiển thị bên dưới */
+#options-1 {
+    top: -140px; /* Điều chỉnh khoảng cách bên dưới nút */
+    left: -22px;
+    position: absolute;
+    width: 130px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.63);
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1em;
+}
+
+/* Danh sách của nút Tài Liệu - Hiển thị bên trên */
+#options-2 {
+    top: -230px; /* Điều chỉnh khoảng cách bên trên nút */
+    left: -28px;
+    position: absolute;
+    width: 130px;
+    padding: 10px;
+    background-color: rgb(0, 0, 0, 0.63);
+    color: #fff;
+    border-radius: 1px;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+/* Danh sách của nút Ma Sói - Hiển thị bên dưới */
+#options-3 {
+    top: -72px;
+    left: -30px;
+    position: absolute;
+    width: 130px;
+    padding: 10px;
+    background-color: rgb(0, 0, 0, 0.63);
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+/* Danh sách của nút Bổ ích - Hiển thị bên trên */
+#options-4 {
+    bottom: 26px;
+    left: -30px;
+    position: absolute;
+    width: 130px;
+    padding: 10px;
+    background-color: rgb(0, 0, 0, 0.63);
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+
+        /* Chân trang */
+        footer {
+            position: fixed;
+            bottom: 0;
             width: 100%;
-            margin: 5px 0;
-            background-color: #333;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s ease;
-            border-radius: 5px;
-        }
-        .role-button:hover {
-            background-color: #555;
-        }
-        .role-button.red {
-            background-color: red;
-        }
-        input[type="text"], select {
+            background-color: rgba(0, 0, 0, 0.336);
+            color: #ffffff;
+            text-align: center;
             padding: 10px;
-            font-size: 1em;
-            width: 100%;
-            margin-bottom: 10px;
-            color: #222;
-            border: none;
-            border-radius: 5px;
+            font-size: 0.9em;
         }
-        .actions-cell {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
+
+        /* Điều chỉnh cho di động */
+        @media (max-width: 768px) {
+            .navbar img {
+                height: 50px;
+            }
+
+            .title-container h1 {
+                font-size: 1em;
+            }
+
+            .title-container p {
+                font-size: 0.8em;
+            }
+
+            .camp-spot {
+                font-size: 1em;
+                padding: 3px;
+            }
         }
-        .shield-button {
-            background-color: #3498db;
-            color: white;
+
+        .send-message-btn {
+      position: absolute;
+      top: 100px;
+      right: 50px;
+      padding: 10px 20px;
+      background-color: #71be3e;
+      color: rgb(255, 255, 255);
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    .container {
+            position: relative;
+            width: 50%; /* Độ rộng khung chứa */
+            height: 300px; /* Chiều cao khung chứa */
+            margin: 50px auto;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
         }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #333;
+      position: absolute;
+      cursor: pointer;
+    }
+    .tooltip {
+      display: none;
+      position: absolute;
+      background-color: white;
+      border: 1px solid #333;
+      padding: 10px;
+      z-index: 1000;
+    max-width: 500px; /* Giới hạn chiều rộng tối đa */
+    max-height: 500px; /* Giới hạn chiều cao tối đa */
+    overflow-y: auto; /* Thêm cuộn dọc nếu nội dung quá dài */
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Hiệu ứng bóng cho tooltip */
+    }
+
+
     </style>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-65M4B95R0T');
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Quản Trò Ma Sói</h1>
-        <button class="reset-button" onclick="startResetCountdown()">Bắt Đầu Lại</button>
-        <span id="countdownDisplay"></span>
-        <button class="cancel-button" id="cancelResetButton" onclick="cancelReset()" style="display: none;">Hủy</button>
+    <!-- Thanh điều hướng -->
+    <div class="navbar">
+        <a href="index.html">
+            <img src="logo/logoweb-dammekynang.png" alt="Logo">
+        </a>
+        <button class="send-message-btn" onclick="window.location.href='thongdiep.html'">Gửi thông điệp yêu THƯN</button>
+        <div class="title-container">
+            <h1>Chào các bạn đến với trang Kỹ năng</h1>
+            <p>Khám phá các kỹ năng cần thiết để chuẩn bị cho đợt trại của bạn.</p>
+        </div>
+    </div>   
 
-        <div class="controls">
-            <input type="text" id="playerName" placeholder="Nhập tên người chơi">
-            <button class="button" onclick="addPlayer()">Thêm Người Chơi</button>
-            <select id="roles">
-                <option value="Chọn role">Chọn role</option>
-                <option value="Ma Sói">Ma Sói</option>
-                <option value="Phù Thủy">Phù Thủy</option>
-                <option value="Bảo Vệ">Bảo Vệ</option>
-                <option value="Tiên Tri">Tiên Tri</option>
-                <option value="Thần Tình Yêu">Thần Tình Yêu</option>
-                <option value="Bán Sói">Bán Sói</option>
-                <option value="Thằng Ngố">Thằng Ngố</option>
-                <option value="Dân làng">Dân làng</option>
-            </select>
-            <button class="button" onclick="addRole()">Thêm Role Mới</button>
-            <button class="button" onclick="startDayCountdown()">Bắt Đầu Ban Ngày</button>
-            <span id="dayCountdownDisplay"></span>
-            <button class="button" onclick="startNight()">Bắt Đầu Ban Đêm</button>
-            <button class="warning-button" id="dayEndWarning" onclick="alert('Thời gian ban ngày đã hết!')">Thời Gian Ban Ngày Đã Kết Thúc</button>
+    <!-- Bản đồ và các địa điểm cắm trại -->
+    <div class="map-container">
+        <div id="spot-1" class="camp-spot" onmouseover="showOptions(1)" onmouseout="hideOptions(1)">
+            <span>Mật Thư</span>
+            <div class="camp-options" id="options-1">
+                <a href="Enrypt text and text.html">Chữ = Chữ</a>
+                <a href="Enrypttext text and number.html">Chữ = Số</a>
+                <a href="#bophankhac">Tọa Độ</a>
+                <a href="camranh.html">Cam Ranh</a>
+            </div>
+        </div>
+        
+        <div id="spot-2" class="camp-spot" onmouseover="showOptions(2)" onmouseout="hideOptions(2)">
+            <span>Tài Liệu</span>
+            <div class="camp-options" id="options-2">
+                <a href="https://drive.google.com/drive/folders/1bifDD5Z-IRZ0-k81IhwUOkRn-FVav9Ud?usp=sharing">Bản xoay MT</a>
+                <a href="https://drive.google.com/drive/folders/1pOZVhyIZe1hnYFTZ1ghu816twPPYeL-z?usp=sharing">Mật thư</a>
+                <a href="tailieu/muadanvu.html">Múa, dân vũ</a>
+                <a href="https://drive.google.com/drive/folders/1I6GvoY_p7DRe3aJcF7XB8O90tsl1ZjHB?usp=sharing">Nút dây</a>
+                <a href="https://drive.google.com/drive/folders/1mC-WOnBuPkrmCJkouRFKs2UBHTXmZ4kg?usp=sharing">SH vòng tròn</a>
+                <a href="https://drive.google.com/drive/folders/1Z-8nqt1d-QCK4vNqyudIefj4akklwSY4?usp=sharing">TC trại</a>
+                <a href="https://drive.google.com/drive/folders/1G3NoLJMvm1ubxaq8f-wiAb2Av37hvGA4?usp=sharing">Trò chơi lớn</a>
+                <a href="https://drive.google.com/drive/folders/1y7b-HG6ZN_DeDd6CIF8Rq_Mv9OpFRpCp?usp=sharing">Trò chơi nhỏ</a>
+            </div>
         </div>
 
-        <div id="nightRoleList" class="night-role-list" style="display: none;">
-            <p><strong>Lần lượt gọi tên các vai trò</strong></p>
+        <div id="spot-3" class="camp-spot" onmouseover="showOptions(3)" onmouseout="hideOptions(3)">
+            <span>Ma Sói</span>
+            <div class="camp-options" id="options-3">
+                <a href="quantromasoi.html">Quản trò</a>
+                <a href="lawsandandguid.html">Hướng dẫn</a>
+            </div>
         </div>
 
-        <div class="player-list">
-            <h2>Danh Sách Người Chơi</h2>
-            <table id="playersTable">
-                <tr>
-                    <th>Tên Người Chơi</th>
-                    <th>Vai Trò</th>
-                    <th>Trạng Thái</th>
-                    <th>Ghi Chú</th>
-                    <th>Thao Tác</th>
-                </tr>
-            </table>
-        </div>
-        <div class="role-list">
-            <h2>Ghi Chú Trò Chơi</h2>
-            <ul id="gameLog"></ul>
+        <div id="spot-4" class="camp-spot" onmouseover="showOptions(4)" onmouseout="hideOptions(4)">
+            <span>Bổ ích</span>
+            <div class="camp-options" id="options-4">
+                <a href="details3.html">Kỷ Cương</a>
+                <a href="booking3.html">Dịch AI</a>
+                <a href="activities3.html">Luật</a>
+            </div>
         </div>
     </div>
 
+    <!-- Chân trang -->
+    <footer>
+        <p>&copy; 2024 Đam Mê Kỹ Năng. Mọi quyền được bảo lưu. Vui lòng không sao chép</p>
+        <p><a href="/lienhe.html">Liên Hệ</a> | <a href="/chinhsach.html">Chính Sách Bảo Mật</a> | <a href="/dieukhoan.html">Điều Khoản Sử Dụng</a></p>
+    </footer>
+
     <script>
-        let players = [];
-        let resetTimeout;
-        let resetCounter = 10;
-        let dayCountdown;
-        let dayCounter = 300;
-        let lovePair = [];
-        const nightRolesOrder = ["Thần Tình Yêu", "Bảo Vệ", "Ma Sói", "Phù Thủy", "Tiên Tri", "Bán Sói", "Thằng Ngố", "Dân làng"];
-
-        function addPlayer() {
-            const playerName = document.getElementById('playerName').value;
-            if (playerName) {
-                players.push({ name: playerName, role: "Chưa gán", status: 'Sống', note: "" });
-                document.getElementById('playerName').value = '';
-                renderPlayers();
-                logEvent(`Người chơi ${playerName} đã được thêm vào.`);
-            }
+        function showOptions(id) {
+            document.getElementById(`options-${id}`).style.display = "block";
         }
 
-        function addRole() {
-            const newRole = prompt("Nhập tên role mới:");
-            if (newRole) {
-                const roleSelect = document.getElementById('roles');
-                const option = document.createElement("option");
-                option.value = newRole;
-                option.text = newRole;
-                roleSelect.add(option);
-                logEvent(`Vai trò mới "${newRole}" đã được thêm.`);
-            }
+        function hideOptions(id) {
+            document.getElementById(`options-${id}`).style.display = "none";
         }
+    </script>
+<body>
+    <!-- Thanh điều hướng -->
+    <div class="navbar">
+        <a href="index.html">
+            <img src="logo/logoweb-dammekynang.png" alt="Logo">
+        </a>
+        <div class="title-container">
+            <h1>Chào các bạn đến với trang Kỹ năng</h1>
+            <p>Khám phá các kỹ năng cần thiết để chuẩn bị cho đợt trại của bạn.</p>
+        </div>
+    </div>
 
-        function changeRole(playerName) {
-            const roleSelect = document.createElement("select");
-            roleSelect.onchange = function() {
-                const selectedRole = roleSelect.value;
-                const player = players.find(p => p.name === playerName);
-                if (player) {
-                    player.role = selectedRole;
-                    renderPlayers();
-                    logEvent(`Vai trò của ${playerName} đã được đổi thành ${selectedRole}.`);
-                    if (selectedRole === "Thần Tình Yêu") {
-                        addLoveButtons();
-                    }
-                }
-            };
+    <div id="message-dots"></div> <!-- Container cho các dấu chấm thông điệp -->
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const messageDotsContainer = document.getElementById('message-dots');
 
-            const roles = document.getElementById('roles').options;
-            for (let i = 0; i < roles.length; i++) {
-                const option = document.createElement("option");
-                option.value = roles[i].value;
-                option.text = roles[i].text;
-                roleSelect.add(option);
-            }
+    // Tải thông điệp từ Firebase
+    firebase.database().ref('messages').on('value', (snapshot) => {
+        messageDotsContainer.innerHTML = ''; // Xóa các dấu chấm cũ
+        const messages = snapshot.val();
+        if (messages) {
+            Object.values(messages).forEach(message => {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
 
-            const playerRow = document.getElementById(playerName).querySelector('.role-cell');
-            playerRow.innerHTML = '';
-            playerRow.appendChild(roleSelect);
-        }
 
-        function addLoveButtons() {
-            players.forEach(player => {
-                if (!document.getElementById(`${player.name}-heart`)) {
-                    const heartButton = document.createElement("button");
-                    heartButton.id = `${player.name}-heart`;
-                    heartButton.textContent = "❤️";
-                    heartButton.onclick = function() {
-                        selectLovePair(player.name);
-                    };
-                    document.getElementById(player.name).querySelector('.actions-cell').appendChild(heartButton);
-                }
+            // Vị trí ngẫu nhiên cho dấu chấm
+            dot.style.top = `${10 + Math.random() * 80}%`;
+            dot.style.left = `${10 + Math.random() * 80}%`;
+      
+            // Hiển thị thông điệp khi hover
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+
+                  // Nội dung bảng với tên người nhận và thông điệp
+      tooltip.innerHTML = `
+        <table>
+          <tr><td><strong>Tên người nhận:</strong></td><td>${message.recipient}</td></tr>
+          <tr><td><strong>Thông điệp:</strong></td><td>${message.text}</td></tr>
+        </table>
+      `;
+
+                // Thêm tooltip vào body
+    document.body.appendChild(tooltip);
+
+      document.body.appendChild(tooltip); // Thêm tooltip vào toàn bộ body để có thể cố định ở giữa
+      
+            dot.addEventListener('mouseover', () => {
+              tooltip.style.display = 'block';
+              tooltip.style.top = `${dot.getBoundingClientRect().top - tooltip.offsetHeight - 5}px`;
+              tooltip.style.left = `${dot.getBoundingClientRect().left}px`;
             });
-        }
-
-        function selectLovePair(playerName) {
-            if (lovePair.length < 2 && !lovePair.includes(playerName)) {
-                lovePair.push(playerName);
-                logEvent(`${playerName} đã được chọn là một nửa của cặp đôi.`);
-            }
-            if (lovePair.length === 2) {
-                logEvent(`Cặp đôi đã chọn là: ${lovePair[0]} và ${lovePair[1]}`);
-                // Vô hiệu hóa tất cả các nút trái tim sau khi chọn cặp đôi
-                players.forEach(player => {
-                    const heartButton = document.getElementById(`${player.name}-heart`);
-                    if (heartButton) heartButton.disabled = true;
-                });
-                renderPlayers(); // Render lại danh sách người chơi để hiển thị trái tim bên cạnh cặp đôi
-            }
-        }
-
-        function toggleStatus(playerName) {
-            const player = players.find(p => p.name === playerName);
-            if (player) {
-                player.status = player.status === 'Sống' ? 'Chết' : 'Sống';
-                renderPlayers();
-                logEvent(`Trạng thái của ${playerName} đã thay đổi thành ${player.status}.`);
-                checkLovePairStatus(playerName);
-            }
-        }
-
-        function checkLovePairStatus(playerName) {
-            if (lovePair.includes(playerName) && players.find(p => p.name === playerName).status === 'Chết') {
-                const partner = lovePair.find(name => name !== playerName);
-                const partnerPlayer = players.find(p => p.name === partner);
-                if (partnerPlayer && partnerPlayer.status === 'Sống') {
-                    partnerPlayer.status = 'Chết';
-                    renderPlayers();
-                    logEvent(`${partner} đã chết theo ${playerName} vì là cặp đôi.`);
-                }
-            }
-        }
-
-        function renderPlayers() {
-            const playersTable = document.getElementById('playersTable');
-            playersTable.innerHTML = `<tr>
-                <th>Tên Người Chơi</th>
-                <th>Vai Trò</th>
-                <th>Trạng Thái</th>
-                <th>Ghi Chú</th>
-                <th class="actions-cell">Thao Tác</th>
-            </tr>`;
-
-            players.forEach(player => {
-                const rowClass = player.status === 'Sống' ? 'alive' : 'dead';
-                const isLovePair = lovePair.includes(player.name) ? " ❤️" : ""; // Thêm trái tim nếu là cặp đôi
-                playersTable.innerHTML += `<tr id="${player.name}" class="${rowClass}">
-                    <td>${player.name}${isLovePair}</td>
-                    <td class="role-cell">${player.role}</td>
-                    <td>${player.status}</td>
-                    <td><input type="text" value="${player.note}" onchange="updateNote('${player.name}', this.value)" /></td>
-                    <td class="actions-cell">
-                        <button onclick="toggleStatus('${player.name}')">Đổi Trạng Thái</button>
-                        <button onclick="changeRole('${player.name}')">Đổi Vai Trò</button>
-                        <button onclick="deletePlayer('${player.name}')">Xóa</button>
-                    </td>
-                </tr>`;
+      
+            dot.addEventListener('mouseout', () => {
+              tooltip.style.display = 'none';
             });
+            messageDotsContainer.appendChild(dot);
+        });
         }
-
-        function updateNote(playerName, note) {
-            const player = players.find(p => p.name === playerName);
-            if (player) {
-                player.note = note;
-            }
-        }
-
-        function startResetCountdown() {
-            resetCounter = 10;
-            document.getElementById("countdownDisplay").textContent = `Đếm ngược: ${resetCounter} giây`;
-            document.getElementById("cancelResetButton").style.display = "inline-block";
-
-            resetTimeout = setInterval(() => {
-                resetCounter--;
-                document.getElementById("countdownDisplay").textContent = `Đếm ngược: ${resetCounter} giây`;
-
-                if (resetCounter === 0) {
-                    clearInterval(resetTimeout);
-                    resetRolesAndStatus();
-                }
-            }, 1000);
-        }
-
-        function cancelReset() {
-            clearInterval(resetTimeout);
-            document.getElementById("countdownDisplay").textContent = "";
-            document.getElementById("cancelResetButton").style.display = "none";
-            logEvent("Đặt lại đã bị hủy.");
-        }
-
-        function resetRolesAndStatus() {
-            players.forEach(player => {
-                player.role = "Chưa gán";
-                player.status = "Sống";
-                player.note = ""; // Xóa ghi chú
-            });
-            lovePair = [];
-            protectedPlayer = null;
-
-            renderPlayers();
-            document.getElementById("gameLog").innerHTML = "";
-            document.getElementById("countdownDisplay").textContent = "";
-            document.getElementById("cancelResetButton").style.display = "none";
-            logEvent("Toàn bộ trò chơi đã đặt lại.");
-        }
-
-        function startDayCountdown() {
-            dayCounter = 300;
-            document.getElementById("dayEndWarning").style.display = "none";
-            document.getElementById("dayCountdownDisplay").textContent = `Thời gian ban ngày: ${Math.floor(dayCounter / 60)}:${String(dayCounter % 60).padStart(2, '0')}`;
-            
-            dayCountdown = setInterval(() => {
-                dayCounter--;
-                document.getElementById("dayCountdownDisplay").textContent = `Thời gian ban ngày: ${Math.floor(dayCounter / 60)}:${String(dayCounter % 60).padStart(2, '0')}`;
-
-                if (dayCounter === 0) {
-                    clearInterval(dayCountdown);
-                    document.getElementById("dayEndWarning").style.display = "inline-block";
-                    logEvent("Thời gian ban ngày đã kết thúc!");
-                }
-            }, 1000);
-        }
-
-        function startNight() {
-            const nightRoleList = document.getElementById('nightRoleList');
-            nightRoleList.innerHTML = "<p><strong>Lần lượt gọi tên các vai trò</strong></p>"; // Add the note dynamically
-            nightRoleList.style.display = "flex";
-
-            const roleOptions = Array.from(document.getElementById('roles').options).map(option => option.value);
-            const uniqueRoles = [...nightRolesOrder, ...roleOptions.filter(role => !nightRolesOrder.includes(role))];
-
-            uniqueRoles.forEach(role => {
-                const roleButton = document.createElement("button");
-                roleButton.classList.add("role-button");
-                roleButton.textContent = role;
-                roleButton.onclick = function() {
-                    roleButton.classList.add("red");
-                    roleButton.disabled = true;
-                    checkNightRolesComplete();
-                };
-                nightRoleList.appendChild(roleButton);
-            });
-        }
-
-        function checkNightRolesComplete() {
-            const roleButtons = document.querySelectorAll(".role-button");
-            const allRed = Array.from(roleButtons).every(button => button.classList.contains("red"));
-            if (allRed) {
-                setTimeout(() => {
-                    document.getElementById("nightRoleList").style.display = "none";
-                }, 500);
-            }
-        }
-
-        function logEvent(event) {
-            const gameLog = document.getElementById('gameLog');
-            const logEntry = document.createElement('li');
-            logEntry.textContent = event;
-            gameLog.appendChild(logEntry);
-        }
-
-             let protectedPlayer = null; // Biến để lưu người chơi được bảo vệ
-
-function renderPlayers() {
-    const playersTable = document.getElementById('playersTable');
-    playersTable.innerHTML = `<tr>
-        <th>Tên Người Chơi</th>
-        <th>Vai Trò</th>
-        <th>Trạng Thái</th>
-        <th>Ghi Chú</th>
-        <th class="actions-cell">Thao Tác</th>
-    </tr>`;
-
-    players.forEach(player => {
-        const rowClass = player.status === 'Sống' ? 'alive' : 'dead';
-        const isLovePair = lovePair.includes(player.name) ? " ❤️" : ""; // Thêm trái tim nếu là cặp đôi
-        playersTable.innerHTML += `<tr id="${player.name}" class="${rowClass}">
-            <td>${player.name}${isLovePair}</td>
-            <td class="role-cell">${player.role}</td>
-            <td>${player.status}</td>
-            <td><input type="text" value="${player.note}" onchange="updateNote('${player.name}', this.value)" /></td>
-            <td class="actions-cell">
-                <button onclick="toggleStatus('${player.name}')">Đổi Trạng Thái</button>
-                <button onclick="changeRole('${player.name}')">Đổi Vai Trò</button>
-                ${player.role === "Bảo Vệ" ? '<button onclick="activateShield()" class="shield-button">🛡️</button>' : ""}
-                <button onclick="deletePlayer('${player.name}')">Xóa</button>
-            </td>
-        </tr>`;
     });
-}
 
-function activateShield() {
-    const selectedPlayer = prompt("Nhập tên người chơi mà Bảo Vệ muốn bảo vệ:");
-    const player = players.find(p => p.name === selectedPlayer);
-    if (player && player.status === 'Sống') {
-        protectedPlayer = player.name;
-        logEvent(`${protectedPlayer} đã được bảo vệ bởi Bảo Vệ.`);
-    } else {
-        alert("Người chơi không hợp lệ hoặc không tồn tại.");
+    // Hàm lưu thông điệp mới vào Firebase
+    function saveMessage(recipient, text) {
+        const newMessageRef = firebase.database().ref('messages').push();
+        newMessageRef.set({
+            recipient: recipient,
+            text: text
+        });
     }
-}
+});
+    </script>
 
-function toggleStatus(playerName) {
-    const player = players.find(p => p.name === playerName);
-    if (player) {
-        if (player.status === 'Sống' && playerName === protectedPlayer) {
-            logEvent(`${playerName} đã được bảo vệ và không bị chết.`);
-            protectedPlayer = null; // Reset bảo vệ sau khi dùng
-        } else if (player.role === 'Bán Sói' && player.status === 'Sống') {
-            player.role = 'Ma Sói';
-            logEvent(`${playerName} từ bán sói đã biến đổi thành Ma Sói và được sống lại.`);
-        } else {
-            player.status = player.status === 'Sống' ? 'Chết' : 'Sống';
-            renderPlayers();
-            logEvent(`Trạng thái của ${playerName} đã thay đổi thành ${player.status}.`);
-            checkLovePairStatus(playerName);
+    <!-- Bản đồ và các địa điểm cắm trại -->
+    <div class="map-container">
+        <div id="spot-1" class="camp-spot" onmouseover="showOptions(1)" onmouseout="hideOptions(1)">
+            <span>Mật Thư</span>
+            <div class="camp-options" id="options-1">
+                <a href="Enrypt text and text.html">Chữ = Chữ</a>
+                <a href="Enrypttext text and number.html">Chữ = Số</a>
+                <a href="#bophankhac">Tọa Độ</a>
+                <a href="camranh.html">Cam Ranh</a>
+            </div>
+        </div>
+        
+        <div id="spot-2" class="camp-spot" onmouseover="showOptions(2)" onmouseout="hideOptions(2)">
+            <span>Tài Liệu</span>
+            <div class="camp-options" id="options-2">
+                <a href="https://drive.google.com/drive/folders/1bifDD5Z-IRZ0-k81IhwUOkRn-FVav9Ud?usp=sharing">Bản xoay MT</a>
+                <a href="https://drive.google.com/drive/folders/1pOZVhyIZe1hnYFTZ1ghu816twPPYeL-z?usp=sharing">Mật thư</a>
+                <a href="tailieu/muadanvu.html">Múa, dân vũ</a>
+                <a href="https://drive.google.com/drive/folders/1I6GvoY_p7DRe3aJcF7XB8O90tsl1ZjHB?usp=sharing">Nút dây</a>
+                <a href="https://drive.google.com/drive/folders/1mC-WOnBuPkrmCJkouRFKs2UBHTXmZ4kg?usp=sharing">SH vòng tròn</a>
+                <a href="https://drive.google.com/drive/folders/1Z-8nqt1d-QCK4vNqyudIefj4akklwSY4?usp=sharing">TC trại</a>
+                <a href="https://drive.google.com/drive/folders/1G3NoLJMvm1ubxaq8f-wiAb2Av37hvGA4?usp=sharing">Trò chơi lớn</a>
+                <a href="https://drive.google.com/drive/folders/1y7b-HG6ZN_DeDd6CIF8Rq_Mv9OpFRpCp?usp=sharing">Trò chơi nhỏ</a>
+            </div>
+        </div>
+
+        <div id="spot-3" class="camp-spot" onmouseover="showOptions(3)" onmouseout="hideOptions(3)">
+            <span>Ma Sói</span>
+            <div class="camp-options" id="options-3">
+                <a href="quantromasoi.html">Quản trò</a>
+                <a href="lawsandandguid.html">Hướng dẫn</a>
+            </div>
+        </div>
+
+        <div id="spot-4" class="camp-spot" onmouseover="showOptions(4)" onmouseout="hideOptions(4)">
+            <span>Bổ ích</span>
+            <div class="camp-options" id="options-4">
+                <a href="details3.html">Kỷ Cương</a>
+                <a href="booking3.html">Dịch AI</a>
+                <a href="activities3.html">Luật</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chân trang -->
+    <footer>
+        <p>&copy; 2024 Đam Mê Kỹ Năng. Mọi quyền được bảo lưu. Vui lòng không sao chép</p>
+        <p><a href="/lienhe.html">Liên Hệ</a> | <a href="/chinhsach.html">Chính Sách Bảo Mật</a> | <a href="/dieukhoan.html">Điều Khoản Sử Dụng</a></p>
+    </footer>
+
+    <script>
+        function showOptions(id) {
+            document.getElementById(`options-${id}`).style.display = "block";
         }
-    }
-    renderPlayers(); // Cập nhật lại danh sách người chơi để hiển thị thay đổi
-}
 
-function startDayCountdown() {
-    dayCounter = 300;
-    document.getElementById("dayEndWarning").style.display = "none";
-    document.getElementById("dayCountdownDisplay").textContent = `Thời gian ban ngày: ${Math.floor(dayCounter / 60)}:${String(dayCounter % 60).padStart(2, '0')}`;
-    
-    dayCountdown = setInterval(() => {
-        dayCounter--;
-        document.getElementById("dayCountdownDisplay").textContent = `Thời gian ban ngày: ${Math.floor(dayCounter / 60)}:${String(dayCounter % 60).padStart(2, '0')}`;
-
-        if (dayCounter === 0) {
-            clearInterval(dayCountdown);
-            document.getElementById("dayEndWarning").style.display = "inline-block";
-            logEvent("Thời gian ban ngày đã kết thúc!");
+        function hideOptions(id) {
+            document.getElementById(`options-${id}`).style.display = "none";
         }
-    }, 1000);
-    
-    // Reset bảo vệ vào đầu ngày mới
-    protectedPlayer = null;
-    logEvent("Trạng thái bảo vệ đã được đặt lại.");
-}
-
     </script>
 </body>
 </html>
